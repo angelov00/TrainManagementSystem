@@ -1,0 +1,13 @@
+package com.example.trainmanagementsystem;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class TrainManagementSystemApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(TrainManagementSystemApplication.class, args);
+    }
+
+}

@@ -1,0 +1,34 @@
+logging:
+  level:
+    blog: WARN
+    org: WARN
+    org.hibernate.SQL: DEBUG
+    com.cloudinary: DEBUG
+server:
+  port: 8880
+spring:
+  application:
+    name:
+      TrainManagementSystem
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/train_management_system?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        show_sql: true
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
+    async:
+      request-timeout:
+  web:
+    resources:
+      add-mappings: true
