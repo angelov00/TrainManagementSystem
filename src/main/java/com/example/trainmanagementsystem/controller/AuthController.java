@@ -2,8 +2,8 @@ package com.example.trainmanagementsystem.controller;
 
 import com.example.trainmanagementsystem.model.DTO.UserLoginDTO;
 import com.example.trainmanagementsystem.model.DTO.UserRegisterDTO;
-import com.example.trainmanagementsystem.model.entity.User;
 import com.example.trainmanagementsystem.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -30,11 +28,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO userLoginDTO) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userLoginDTO.getEmail(), userLoginDTO.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(userLoginDTO.getEmail(), userLoginDTO.getPassword()));
             return ResponseEntity.ok("Login successful");
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email/password");
@@ -42,9 +39,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRegisterDTO userRegisterDTO) {
-        Optional<User> doesExist = this.userService.findByEmail(userRegisterDTO.getEmail());
-        if(doesExist.isPresent()) {
+    public ResponseEntity<String> register(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
+
+        if(this.userService.doesExist(userRegisterDTO.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is already taken!");
         }
 

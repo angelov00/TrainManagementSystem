@@ -3,9 +3,7 @@ package com.example.trainmanagementsystem.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -20,7 +18,7 @@ public class Travel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Route route;
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL)
@@ -28,4 +26,6 @@ public class Travel {
 
     @ElementCollection
     private Set<LocalDateTime> timetable;
+
+
 }

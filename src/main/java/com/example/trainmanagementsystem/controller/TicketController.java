@@ -4,7 +4,6 @@ import com.example.trainmanagementsystem.model.entity.Station;
 import com.example.trainmanagementsystem.model.entity.Travel;
 import com.example.trainmanagementsystem.service.StationService;
 import com.example.trainmanagementsystem.service.TravelService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,11 +27,6 @@ public class TicketController {
         this.travelService = travelService;
     }
 
-    @GetMapping("/a")
-    public ResponseEntity<String> getHome() {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-    }
-
     @GetMapping("/search")
     public ResponseEntity<List<Travel>> getTravelByStations(
             @RequestParam String startStationName,
@@ -46,6 +40,8 @@ public class TicketController {
         }
 
         List<Travel> potentialTravels = travelService.findByRouteContainingStations(startStation.get(), endStation.get());
+
+        //we need to take the direction into consideration (boolean isValidTravel)
         List<Travel> validTravels = potentialTravels.stream()
                 .filter(travel -> isValidTravel(travel.getRoute().getStations(), startStation.get(), endStation.get()))
                 .collect(Collectors.toList());

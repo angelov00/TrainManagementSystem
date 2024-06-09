@@ -1,16 +1,16 @@
 package com.example.trainmanagementsystem.util;
 
-import com.example.trainmanagementsystem.model.entity.Address;
 import com.example.trainmanagementsystem.model.entity.Route;
 import com.example.trainmanagementsystem.model.entity.Station;
+import com.example.trainmanagementsystem.model.entity.Travel;
 import com.example.trainmanagementsystem.repository.RouteRepository;
 import com.example.trainmanagementsystem.repository.StationRepository;
+import com.example.trainmanagementsystem.repository.TravelRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -18,11 +18,13 @@ public class InitDB {
 
     private final StationRepository stationRepository;
     private final RouteRepository routeRepository;
+    private final TravelRepository travelRepository;
 
     @Autowired
-    public InitDB(StationRepository stationRepository, RouteRepository routeRepository) {
+    public InitDB(StationRepository stationRepository, RouteRepository routeRepository, TravelRepository travelRepository) {
         this.stationRepository = stationRepository;
         this.routeRepository = routeRepository;
+        this.travelRepository = travelRepository;
     }
 
     @PostConstruct
@@ -61,6 +63,12 @@ public class InitDB {
         route.setStations(stations);
 
         this.routeRepository.saveAndFlush(route);
+
+        Travel travel = new Travel();
+        travel.setRoute(route);
+        travel.setTickets(new LinkedHashSet<>());
+        travel.setTimetable(new LinkedHashSet<>());
+        this.travelRepository.save(travel);
     }
 
 }

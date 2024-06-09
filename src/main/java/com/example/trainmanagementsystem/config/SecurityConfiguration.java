@@ -19,7 +19,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
     public SecurityConfiguration(UserDetailsService userDetailsService) {
@@ -38,8 +38,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/register").permitAll()
                         .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/auth/logout").authenticated()
                         .requestMatchers("/tickets/search").permitAll()
-                        .requestMatchers("/tickets").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(withDefaults())

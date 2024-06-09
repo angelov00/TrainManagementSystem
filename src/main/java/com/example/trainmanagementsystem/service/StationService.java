@@ -18,7 +18,10 @@ public class StationService {
     }
 
     public Optional<Station> findByName(String name) {
-        return this.stationRepository.findStationByName(name);
+        System.out.println("Trying to get: " + name);
+        Optional<Station> result = this.stationRepository.findStationByName(name);
+        System.out.println("Found: " + result.toString());
+        return result;
     }
 
 
